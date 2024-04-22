@@ -8,15 +8,15 @@ const path = require('path');
 
 const app = express();
 
-// Databse connection
+// Database connection
 mongoose
   .connect('mongodb://localhost/cleanblog-test-db')
   .then(() => console.log('database bağlantısı kuruldu'));
 
-//VİEW ENGİNE SETUP
+//VIEW ENGINE SETUP
 app.set('view engine', 'ejs');
 
-//MİDDLEWARE
+//MIDDLEWARE
 app.use(express.static(path.resolve(__dirname + '/public')));
 app.use(express.urlencoded({extended: true}))
 app.use(express.json());
