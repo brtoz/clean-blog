@@ -1,57 +1,57 @@
-const express = require('express');
-const ejs = require('ejs');
-const mongoose = require('mongoose');
+import express from "express";
+import mongoose from "mongoose";
+import methodOverride from "method-override";
+import ejs from "ejs";
 
-const Post = require('./models/Post')
+import Post from "./models/Post.js";
 
-const path = require('path');
+import {
+  getAllPosts,
+  getPost,
+  updatePost,
+  createPost,
+  deletePost,
+} from "./controllers/postControllers.js";
+
+import {
+  getAboutPage,
+  getAddPage,
+  getEditPage,
+} from "./controllers/pageControllers.js";
 
 const app = express();
 
-// Database connection
-mongoose
-  .connect('mongodb://localhost/cleanblog-test-db')
-  .then(() => console.log('database bağlantısı kuruldu'));
+//connect DB
+mongoose.connect(
+  "mongodb+srv://ziyacaylan:NDRfzzXib8DkDoG8@cluster0.mcsg4ut.mongodb.net/?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 
-//VIEW ENGINE SETUP
-app.set('view engine', 'ejs');
+//TEMPLATE ENGINE
+app.set("view engine", "ejs");
 
-//MIDDLEWARE
-app.use(express.static(path.resolve(__dirname + '/public')));
-app.use(express.urlencoded({extended: true}))
+// MIDDLEWARE
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(methodOverride("_method", { methods: ["POST", "GET"] }));
 
 //ROUTES
-app.get('/', async (req, res) => {
-  const posts = await Post.find({})
-    res.render('index', {posts});
-});
+app.get("/", getAllPosts);
+app.get("/post/:id", getPost);
+app.put("/post/:id", updatePost);
+app.get("/about", getAboutPage);
+app.delete("/post/:id", deletePost);
 
-app.get('/post/:post_id', async (req,res) =>{
-  const foundedPost = await Post.findById(req.params.post_id)
-  res.render('post', {post: foundedPost})
-})
+app.get("/add_post", getAddPage);
+app.post("/add", createPost);
+app.get("/edit_post/:id", getEditPage);
 
-app.get('/about', (req, res) => {
-  res.render('about');
-});
+const port = process.env.port || 3000;
 
-app.get('/add_post', (req, res) => {
-  res.render('add_post');
-});
-
-
-app.get('/post', (req, res) => {
-  res.render('post');
-});
-
-app.post('/add_post', async (req, res) => {
-  await Post.create(req.body)
-
-  res.redirect('/')
-});
-
-const port = 3000;
 app.listen(port, () => {
-  console.log(`sunucu ${port} ile çalışıyor`);
+  console.log(`Sunucu ${port} portunda başlatıldı..`);
 });

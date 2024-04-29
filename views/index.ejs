@@ -1,33 +1,45 @@
-<!-- Navigation Bar-->
-<%- include ('partials/_navbar.ejs') %>  
+<%- include('partials/_header.ejs') %>
+<body>
+
+  
+  <%- include('partials/_navigation.ejs') %>
 
   <!-- Page Header -->
-  <%- include ('partials/_header.ejs') %>  
+  <header class="masthead" style="background-image: url('img/home-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="site-heading">
+            <h1>Clean Blog</h1>
+            <span class="subheading">A Blog Theme by Start Bootstrap</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
 
   <!-- Main Content -->
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-
-            <% posts.forEach(element => { %>
-
-              <div class="post-preview">
-                <a href="post/<%= element._id %> ">
+        <% posts.map((p)=>{ %>
+       <div class="post-preview">
+                <a href="/post/<%= p._id %>">
                   <h2 class="post-title">
-                    <%= element.title %> 
+                    <%= p.title %>
                   </h2>
+                  <h5 class="post-subtitle">
+                    <%= p.detail.substring(0,90) %> ...
+                  </h5>
                 </a>
-                <label for=""> <%= element.detail %></label>
-                <p class="post-meta">Writed by
-                  <a href="#">Nuhgnc</a>
-                  on <%= element.dateCreated %> </p>
+                <p class=" post-meta">Posted by
+                  <a href="#">Start Bootstrap</a>
+                  on <%= p.dateCreated %>
+                </p>
               </div>
-              <hr>
-
-            <% }) %>
-    
-       
-        <br>
+        <hr>
+         <% }) %>
         <!-- Pager -->
         <div class="clearfix">
           <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
@@ -38,9 +50,8 @@
 
   <hr>
 
-  <!-- Footer -->
-  <%- include ('partials/_footer.ejs') %>  
-
+  
+  <%- include('partials/_footer.ejs') %>
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
