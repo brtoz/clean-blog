@@ -23,7 +23,7 @@ const app = express();
 
 //connect DB
 mongoose.connect(
-  "mongodb+srv://ziyacaylan:NDRfzzXib8DkDoG8@cluster0.mcsg4ut.mongodb.net/?retryWrites=true&w=majority",
+  "mongodb://localhost/cleanblog",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
